@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calculator</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg,#1f1c2c,#928dab);
+  font-family: Arial;
+}
+
+.calculator {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+#display {
+  width: 100%;
+  height: 60px;
+  font-size: 26px;
+  text-align: right;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: #0ff;
+  margin-bottom: 10px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 75px);
+  gap: 10px;
+}
+
+button {
+  height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.num { background:#4facfe; color:#000; }
+.op { background:#ff416c; color:#fff; }
+.func { background:#00c9ff; color:#000; }
+.bracket { background:#ffd200; color:#000; }
+.equal { background:#00c853; grid-column: span 2; }
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+<input type="text" id="display">
+
+<div class="buttons">
+
+<button class="func" onclick="append('Math.sin(')">sin</button>
+<button class="func" onclick="append('Math.cos(')">cos</button>
+<button class="func" onclick="append('Math.tan(')">tan</button>
+<button class="func" onclick="append('Math.sqrt(')">√</button>
+
+<button onclick="clearDisplay()">C</button>
+<button onclick="deleteLast()">DEL</button>
+<button class="op" onclick="append('%')">%</button>
+<button class="op" onclick="append('/')">÷</button>
+
+<button class="num" onclick="append('7')">7</button>
+<button class="num" onclick="append('8')">8</button>
+<button class="num" onclick="append('9')">9</button>
+<button class="op" onclick="append('*')">×</button>
+
+<button class="num" onclick="append('4')">4</button>
+<button class="num" onclick="append('5')">5</button>
+<button class="num" onclick="append('6')">6</button>
+<button class="op" onclick="append('-')">−</button>
+
+<button class="num" onclick="append('1')">1</button>
+<button class="num" onclick="append('2')">2</button>
+<button class="num" onclick="append('3')">3</button>
+<button class="op" onclick="append('+')">+</button>
+
+<button class="bracket" onclick="append('(')">(</button>
+<button class="bracket" onclick="append(')')">)</button>
+<button class="num" onclick="append('0')">0</button>
+<button class="num" onclick="append('.')">.</button>
+
+<button class="equal" onclick="calculate()">=</button>
+
+</div>
+</div>
+
+<script>
+let display = document.getElementById("display");
+
+/* ADD */
+function append(v){
+  display.value += v;
+}
+
+/* CLEAR */
+function clearDisplay(){
+  display.value = "";
+}
+
+/* DELETE */
+function deleteLast(){
+  display.value = display.value.slice(0,-1);
+}
+
+/* CALCULATE */
+function calculate(){
+  try {
+    display.value = eval(display.value);
+  } catch {
+    display.value = "Error";
+  }
+}
+
+/* ⌨️ FIXED KEYBOARD SUPPORT */
+document.addEventListener("keydown", function(e){
+
+  if (!isNaN(e.key) || "+-*/.%()".includes(e.key)) {
+    append(e.key);
+  }
+
+  else if (e.key === "Enter") {
+    e.preventDefault();   // 🔥 IMPORTANT FIX
+    calculate();
+  }
+
+  else if (e.key === "Backspace") {
+    deleteLast();
+  }
+
+  else if (e.key === "Escape") {
+    clearDisplay();
+  }
+});
+</script>
+
+</body>
+</html>
